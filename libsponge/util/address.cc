@@ -2,12 +2,15 @@
 
 #include "util.hh"
 
+#include <array>
+#include <cstdint>
 #include <arpa/inet.h>
 #include <cstring>
 #include <memory>
 #include <netdb.h>
 #include <stdexcept>
 #include <system_error>
+
 
 using namespace std;
 
@@ -97,7 +100,7 @@ pair<string, uint16_t> Address::ip_port() const {
         throw tagged_error(gai_error_category(), "getnameinfo", gni_ret);
     }
 
-    return {ip.data(), stoi(port.data())};
+    return {std::string(ip.data()), static_cast<uint16_t>(stoi(port.data()))};
 }
 
 string Address::to_string() const {
